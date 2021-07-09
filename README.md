@@ -4,7 +4,7 @@ List GitHub repositories for a specified user.
 
 ghr - GitHub repositories
 
-## Build environment and development environment
+## Development environment
 
 ### Pre-reqs
 
@@ -41,3 +41,6 @@ localhost:3000
 
 The username for the GitHub user is parsed from the URL path. A list of repositories for the user is generated. 
 Each list item links to that repository in GitHub when clicked.
+
+The username is displayed on the page. The username links to the user’s profile in GitHub when clicked.
+

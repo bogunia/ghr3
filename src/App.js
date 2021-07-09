@@ -29,11 +29,25 @@ const AppHeader = (props) => (
   />
 );
 
-// const noUserProvided = () => (
-//   <Box fill align='center' justify='center'>
-//     <Text>text in the box via a function</Text>
-//   </Box>
-// );
+const UserNameLink = () => {
+    const { userName } = useParams();
+    const userProfileHref = `https://github.com/${userName}`;
+    return (
+      <Heading level='3' margin='none'> 
+        <a href={ userProfileHref } target='userWindow'>
+          { userName }
+        </a>
+      </Heading>
+    );
+}
+
+const NoUserProvided = () => {
+  return (
+    <Box fill align='center' justify='center'>
+      <Text color="red">Provide a GitHub user name in the URL, for example: https://localhost:3000/octocat</Text>
+    </Box>
+  );
+}
 
 const queryClient = new QueryClient();
 
@@ -48,7 +62,7 @@ function App() {
           <QueryClientProvider client={queryClient}>
             <Box fill>
               <AppHeader>
-                <Heading level='3' margin='none'>nameHere </Heading>
+                <UserNameLink />
                 <Button onClick={() => {}} >Load more</Button>
               </AppHeader>
               <Box flex align='center' justify='center'>
@@ -59,9 +73,7 @@ function App() {
           </QueryClientProvider>
         </Route>
         <Route path="/">
-          <Box fill align='center' justify='center'>
-            <Text color="red">Provide a GitHub user name in the URL, for example: https://localhost:3000/octocat</Text>
-          </Box>
+          <NoUserProvided />
         </Route>
       </Switch>
     </Router>
@@ -82,7 +94,6 @@ function useRepos() {
 function Repos({ setRepoId }) {
   const queryClient = useQueryClient();
   const { status, data, error, isFetching } = useRepos();
-//  const { userName } = useParams();
 
   return (
     <div>
