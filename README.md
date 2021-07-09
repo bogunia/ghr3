@@ -1,6 +1,7 @@
 # ghr3
 
 List GitHub repositories for a specified user.
+
 ghr - GitHub repositories
 
 ## Build environment and development environment
@@ -21,6 +22,22 @@ $ cd ghr3
 $ npm install
 ```
 
+### To run locally
+
+Run:
+
+```bash
+$ npm start
+```
+
+In a browser, e.g.:
+```bash
+localhost:3000/octocat
+localhost:3000/gandalf
+localhost:3000
+```
+
 ## Project Status
 
-Listing repositories for user `octocat`. Clicking on a repository name takes you to this repository in GitHub.
+The username for the GitHub user is parsed from the URL path. A list of repositories for the user is generated. 
+Each list item links to that repository in GitHub when clicked.
