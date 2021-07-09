@@ -1,6 +1,14 @@
 import React from 'react';
-import { Box, Button, Heading, Grommet, Text } from 'grommet';
+import {
+  Box,
+  Button,
+  Heading,
+  Grommet,
+  List,
+  Paragraph,
+  Text } from 'grommet';
 import { hpe } from 'grommet-theme-hpe';
+import { Star } from 'grommet-icons';
 import {   
   BrowserRouter as Router,
   Route,
@@ -13,6 +21,7 @@ import {
   QueryClient,
   QueryClientProvider,
 } from "react-query";
+import { RepoIdentifier } from './components/RepoIdentifier';
 import { ReactQueryDevtools } from "react-query/devtools";
 
 const AppHeader = (props) => (
@@ -56,27 +65,27 @@ function App() {
 
   return (
     <Grommet theme={ hpe } full>
-    <Router>
-      <Switch>
-        <Route path="/:userName">
-          <QueryClientProvider client={queryClient}>
-            <Box fill>
-              <AppHeader>
-                <UserNameLink />
-                <Button onClick={() => {}} >Load more</Button>
-              </AppHeader>
-              <Box flex align='center' justify='center'>
-                <Repos setRepoId={setRepoId} />
+      <Router>
+        <Switch>
+          <Route path="/:userName">
+            <QueryClientProvider client={queryClient}>
+              <Box fill>
+                <AppHeader>
+                  <UserNameLink />
+                  <Button onClick={() => {}} >Load more</Button>
+                </AppHeader>
+                <Box flex align='center' justify='center'>
+                  <Repos setRepoId={setRepoId} />
+                </Box>
+                <ReactQueryDevtools initialIsOpen />
               </Box>
-              <ReactQueryDevtools initialIsOpen />
-            </Box>
-          </QueryClientProvider>
-        </Route>
-        <Route path="/">
-          <NoUserProvided />
-        </Route>
-      </Switch>
-    </Router>
+            </QueryClientProvider>
+          </Route>
+          <Route path="/">
+            <NoUserProvided />
+          </Route>
+        </Switch>
+      </Router>
     </Grommet>
   );
 }
@@ -96,28 +105,46 @@ function Repos({ setRepoId }) {
   const { status, data, error, isFetching } = useRepos();
 
   return (
-    <div>
-      <div>
-        {status === "loading" ? (
-          "Loading..."
-        ) : status === "error" ? (
-          <span>Error: {error.message}</span>
-        ) : (
-          <>
-            <div>
-              {data.map((repo) => (
-                <p key={repo.id}>
-                  <a href={repo.html_url} target='repoWindow'>
-                    {repo.name}
-                  </a>
-                </p>
-              ))}
-            </div>
-            <div>{isFetching ? "Background Updating..." : " "}</div>
-          </>
-        )}
-      </div>
-    </div>
+    <Box
+      width='100%'
+      style={{position: 'relative'}}
+      overflow='auto' 
+      pad={{ horizontal: 'medium', bottom: 'medium' }}
+      flex
+    >
+      {status === "loading" ? (
+        <Paragraph>Loading...</Paragraph>
+      ) : status === "error" ? (
+        <Paragraph color="red">Error: {error.message}</Paragraph>
+      ) : (
+        <Box>
+          <List
+            data={data}
+            pad="small"
+            background='light-2'
+          >
+            {(datum) => (
+              <Box direction="row" align="center" justify="between">
+                <RepoIdentifier
+                  title={ datum.name }
+                  subTitle={ datum.description }
+                  subSubTitle={ datum.language }
+                  htmlUrl={ datum.html_url }
+                  gap="medium"
+                  size="small"
+                  direction="row"
+                />
+                <Box direction="row" align="center">
+                  { datum.stargazers_count }
+                  <Star color="yellow"/>
+                </Box>
+              </Box>
+            )}
+          </List>
+          <Paragraph>{isFetching ? "Background Updating..." : " "}</Paragraph>
+        </Box>
+      )}
+    </Box>
   );
 }
 
