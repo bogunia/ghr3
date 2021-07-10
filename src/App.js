@@ -17,12 +17,10 @@ import {
 import axios from "axios";
 import {
   useQuery,
-  useQueryClient,
   QueryClient,
   QueryClientProvider,
 } from "react-query";
 import { RepoIdentifier } from './components/RepoIdentifier';
-import { ReactQueryDevtools } from "react-query/devtools";
 
 const AppHeader = (props) => (
   <Box
@@ -61,8 +59,6 @@ const NoUserProvided = () => {
 const queryClient = new QueryClient();
 
 function App() {
-  const [repoId, setRepoId] = React.useState(-1);
-
   return (
     <Grommet theme={ hpe } full>
       <Router>
@@ -75,9 +71,8 @@ function App() {
                   <Button onClick={() => {}} >Load more</Button>
                 </AppHeader>
                 <Box flex align='center' justify='center'>
-                  <Repos setRepoId={setRepoId} />
+                  <Repos />
                 </Box>
-                <ReactQueryDevtools initialIsOpen />
               </Box>
             </QueryClientProvider>
           </Route>
@@ -100,8 +95,7 @@ function useRepos() {
   });
 }
 
-function Repos({ setRepoId }) {
-  const queryClient = useQueryClient();
+function Repos() {
   const { status, data, error, isFetching } = useRepos();
 
   return (
