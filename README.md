@@ -39,9 +39,18 @@ localhost:3000
 
 ## Project Status
 
+I used grommet and react-query in this project.
+
 The username for the GitHub user is parsed from the URL path. A list of repositories for the user is generated. 
 Each list item contains the following: name, description, stars, language. 
 Each repository name links to that repository in GitHub when clicked. 
 
 The username is displayed on the page. The username links to the user’s profile in GitHub when clicked.
 
+To do: pass a token with the requests and add pagination.
+
+To improve quality: 
+Move some pieces to components. 
+Handling of corner cases - better messages, make more consistent (e.g. when no public repositories).
+Add onClick to a row.
+Add unit tests.
